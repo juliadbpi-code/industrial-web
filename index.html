@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Industrial Reels — Contingut industrial que genera credibilitat</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect x='2' y='28' width='8' height='16' rx='2' fill='%239b7ff4' opacity='0.40'/><rect x='14' y='18' width='8' height='26' rx='2' fill='%239b7ff4' opacity='0.65'/><rect x='26' y='6' width='8' height='38' rx='2' fill='%239b7ff4' opacity='0.92'/><rect x='38' y='22' width='8' height='22' rx='2' fill='%239b7ff4' opacity='0.55'/></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #08080e; color: #f0eeff; font-family: Arial, sans-serif; overflow-x: hidden; font-size: 16px; }
+.bg-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse 80% 60% at 15% 20%, rgba(80,40,140,0.22) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 85% 70%, rgba(60,25,110,0.18) 0%, transparent 70%), radial-gradient(ellipse 100% 80% at 50% 100%, rgba(40,15,80,0.25) 0%, transparent 60%), #08080e; }
+.grid-svg { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.55; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(8,8,14,0.88); backdrop-filter: blur(12px); border-bottom: 0.5px solid rgba(140,100,220,0.22); height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; }
+.nav-logo svg { display: block; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 12px; letter-spacing: 0.10em; color: rgba(210,195,255,0.72); text-decoration: none; text-transform: uppercase; cursor: pointer; }
+.nav-links a:hover { color: #f0eeff; }
+.nav-cta { font-size: 12px; letter-spacing: 0.08em; color: rgba(210,195,255,0.72); border: 0.5px solid rgba(155,127,244,0.40); border-radius: 3px; padding: 7px 20px; cursor: pointer; background: none; }
+.nav-cta:hover { background: rgba(155,127,244,0.10); }
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.nav-burger span { display: block; width: 22px; height: 1.5px; background: rgba(210,195,255,0.70); border-radius: 2px; }
+.content { position: relative; z-index: 1; padding-top: 58px; max-width: 1200px; margin: 0 auto; }
+section { position: relative; z-index: 1; padding: 88px 64px; }
+.divider { border: none; border-top: 1px solid rgba(140,100,220,0.28); margin: 0; position: relative; z-index: 1; }
+.slabel { font-size: 11px; letter-spacing: 0.22em; color: rgba(210,195,255,0.72); text-transform: uppercase; margin-bottom: 8px; text-align: center; }
+.stitle { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 42px; color: #f0eeff; text-align: center; margin-bottom: 10px; letter-spacing: 0.04em; }
+.stitle-line { display: block; width: 32px; height: 2px; background: #6b3fa0; margin: 0 auto 40px; border-radius: 2px; }
+.hero { padding: 100px 64px 56px; text-align: center; }
+.hero-tag { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 28px; letter-spacing: 0.06em; color: rgba(210,195,255,0.85); max-width: 700px; margin: 0 auto 60px; line-height: 1.3; }
+.reels-scroll { display: flex; gap: 20px; max-width: 1072px; margin: 0 auto; overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.reels-scroll::-webkit-scrollbar { display: none; }
+.reel-box { flex: 0 0 calc((100% - 40px) / 3); aspect-ratio: 9/16; min-width: 180px; background: rgba(107,63,160,0.06); border: 0.5px dashed rgba(155,127,244,0.35); border-radius: 12px; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+.reel-circle { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(155,127,244,0.35); display: flex; align-items: center; justify-content: center; }
+.reel-play { width: 0; height: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 12px solid rgba(155,127,244,0.45); margin-left: 3px; }
+.reel-lbl { font-size: 11px; color: rgba(155,127,244,0.40); letter-spacing: 0.10em; }
+.reel-dots { display: none; justify-content: center; gap: 8px; margin-top: 20px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(155,127,244,0.25); transition: background 0.3s; }
+.dot.active { background: #9b7ff4; }
+.problema { text-align: center; }
+.problema h2 { font-family: Arial Black, Arial, sans-serif; font-size: 46px; color: #f0eeff; margin-bottom: 20px; line-height: 1.2; letter-spacing: 0.03em; }
+.problema h2 em { color: #9b7ff4; font-style: normal; }
+.problema p { font-size: 17px; color: rgba(210,195,255,0.82); line-height: 1.80; max-width: 680px; margin: 0 auto; }
+.model-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 1072px; margin: 0 auto; }
+.mcard { background: rgba(255,255,255,0.038); border: 0.5px solid rgba(155,127,244,0.35); border-radius: 10px; padding: 28px 24px; }
+.mcard h3 { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 26px; letter-spacing: 0.04em; color: #ddd0ff; margin-bottom: 10px; }
+.mcard p { font-size: 15px; color: rgba(200,185,245,0.62); line-height: 1.65; }
+.peraqui { text-align: center; }
+.peraqui-body { font-size: 18px; color: rgba(210,195,255,0.82); line-height: 1.80; max-width: 720px; margin: 0 auto; }
+.com-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; max-width: 1072px; margin: 0 auto; }
+.ccard { background: rgba(255,255,255,0.034); border: 0.5px solid rgba(155,127,244,0.30); border-radius: 10px; padding: 26px 24px; }
+.ccard h4 { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 22px; letter-spacing: 0.04em; color: #d4c5ff; margin-bottom: 10px; }
+.ccard p { font-size: 15px; color: rgba(200,185,245,0.62); line-height: 1.65; }
+.canals-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 1072px; margin: 0 auto; }
+.canal-card { background: rgba(255,255,255,0.034); border: 0.5px solid rgba(155,127,244,0.30); border-radius: 10px; padding: 30px 26px; text-align: center; }
+.canal-card.addon { border-style: dashed; border-color: rgba(155,127,244,0.45); }
+.canal-icon { font-size: 22px; margin-bottom: 14px; }
+.canal-card h4 { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 24px; letter-spacing: 0.04em; color: #ddd0ff; margin-bottom: 10px; }
+.canal-card p { font-size: 15px; color: rgba(200,185,245,0.62); line-height: 1.62; }
+.canal-tag { display: inline-block; margin-top: 14px; font-size: 11px; letter-spacing: 0.10em; color: rgba(155,127,244,0.60); border: 0.5px solid rgba(155,127,244,0.35); border-radius: 2px; padding: 4px 12px; text-transform: uppercase; }
+.canal-tag.at { background: rgba(107,63,160,0.15); color: rgba(180,155,244,0.80); border-color: rgba(155,127,244,0.45); }
+.sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 860px; margin: 0 auto 24px; }
+.sol-card { background: rgba(255,255,255,0.034); border: 0.5px solid rgba(155,127,244,0.32); border-radius: 10px; padding: 34px 30px; }
+.sol-card.feat { border-color: rgba(155,127,244,0.60); background: rgba(107,63,160,0.14); }
+.sol-name { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 32px; color: #f0eeff; margin-bottom: 6px; letter-spacing: 0.06em; }
+.sol-sub { font-size: 14px; color: rgba(155,127,244,0.58); font-style: italic; margin-bottom: 16px; }
+.sol-channel { display: inline-flex; font-size: 12px; color: rgba(155,127,244,0.65); border: 0.5px solid rgba(155,127,244,0.32); border-radius: 3px; padding: 5px 12px; margin-bottom: 20px; letter-spacing: 0.06em; }
+.sol-items { list-style: none; margin-bottom: 24px; }
+.sol-items li { font-size: 15px; color: rgba(205,190,248,0.68); padding: 7px 0; border-bottom: 0.5px solid rgba(155,127,244,0.15); display: flex; gap: 10px; }
+.sol-items li::before { content: "–"; color: rgba(155,127,244,0.40); flex-shrink: 0; }
+.cta-link { font-size: 13px; color: rgba(210,195,255,0.65); cursor: pointer; background: none; border: none; padding: 0; letter-spacing: 0.04em; text-decoration: underline; text-underline-offset: 3px; }
+.sol-addon { max-width: 860px; margin: 0 auto; background: rgba(107,63,160,0.09); border: 0.5px dashed rgba(155,127,244,0.45); border-radius: 10px; padding: 28px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; }
+.addon-badge { display: inline-block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(180,155,244,0.78); border: 0.5px solid rgba(155,127,244,0.40); border-radius: 3px; padding: 4px 12px; margin-bottom: 10px; }
+.addon-name { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 26px; color: #ddd0ff; margin-bottom: 8px; letter-spacing: 0.04em; }
+.addon-desc { font-size: 15px; color: rgba(200,185,245,0.62); line-height: 1.62; max-width: 520px; }
+.proc-steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; max-width: 1072px; margin: 0 auto; }
+.pstep { background: rgba(255,255,255,0.030); border: 0.5px solid rgba(155,127,244,0.28); border-radius: 10px; padding: 24px 14px; text-align: center; }
+.pstep-n { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 48px; color: #9b7ff4; margin-bottom: 12px; }
+.pstep h4 { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 18px; letter-spacing: 0.04em; color: #cfc0f8; margin-bottom: 8px; line-height: 1.2; }
+.pstep p { font-size: 13px; color: rgba(200,185,245,0.52); line-height: 1.58; }
+.proc-note { text-align: center; font-size: 13px; color: rgba(155,127,244,0.40); margin-top: 20px; font-style: italic; }
+.cta-sec { text-align: center; }
+.stitle { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 42px; color: #f0eeff; text-align: center; margin-bottom: 10px; letter-spacing: 0.04em; }
+.cta-sec p { font-size: 17px; color: rgba(210,195,255,0.65); margin-bottom: 44px; }
+.cta-form { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.cta-form input, .cta-form textarea { background: rgba(255,255,255,0.050); border: 0.5px solid rgba(155,127,244,0.38); color: #f0eeff; font-size: 15px; padding: 14px 18px; border-radius: 4px; outline: none; font-family: Arial, sans-serif; }
+.cta-form input::placeholder, .cta-form textarea::placeholder { color: rgba(185,165,235,0.32); }
+.cta-form textarea { resize: vertical; min-height: 100px; }
+.cta-form button { background: #6b3fa0; color: #f0eeff; border: none; font-family: 'Bebas Neue', Arial, sans-serif; font-size: 20px; letter-spacing: 0.06em; padding: 14px 28px; border-radius: 4px; cursor: pointer; }
+.cta-form button:hover { background: #7d50b5; }
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 58px; left: 0; right: 0; background: rgba(8,8,14,0.97); padding: 28px 24px; gap: 22px; border-bottom: 0.5px solid rgba(140,100,220,0.22); z-index: 99; }
+  .nav-cta { display: none; }
+  .nav-burger { display: flex; }
+  section { padding: 64px 28px; }
+  .hero { padding: 80px 28px 48px; }
+  .hero-t1, .hero-t2 { font-size: 48px; }
+  .hero-tag { font-size: 24px; }
+  .reel-box { flex: 0 0 80vw; }
+  .reel-dots { display: flex; }
+  .problema h2 { font-size: 36px; }
+  .stitle { font-size: 34px; }
+  .model-grid, .com-grid, .canals-grid { grid-template-columns: 1fr; }
+  .sol-grid { grid-template-columns: 1fr; }
+  .proc-steps { grid-template-columns: 1fr 1fr; }
+  .sol-addon { flex-direction: column; gap: 18px; }
+}
+@media (max-width: 480px) {
+  .hero-t1, .hero-t2 { font-size: 36px; letter-spacing: 0.14em; }
+  .hero-tag { font-size: 20px; }
+  .proc-steps { grid-template-columns: 1fr; }
+  .problema h2 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+
+<svg class="grid-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <filter id="sph" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.008" numOctaves="2" seed="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g filter="url(#sph)">
+    <line x1="0" y1="6%"  x2="100%" y2="6%"  stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="13%" x2="100%" y2="13%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="20%" x2="100%" y2="20%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="27%" x2="100%" y2="27%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="34%" x2="100%" y2="34%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="41%" x2="100%" y2="41%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="48%" x2="100%" y2="48%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="55%" x2="100%" y2="55%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="62%" x2="100%" y2="62%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="69%" x2="100%" y2="69%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="76%" x2="100%" y2="76%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="83%" x2="100%" y2="83%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="90%" x2="100%" y2="90%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="0" y1="97%" x2="100%" y2="97%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="7%"  y1="0" x2="7%"  y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="14%" y1="0" x2="14%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="21%" y1="0" x2="21%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="28%" y1="0" x2="28%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="35%" y1="0" x2="35%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="42%" y1="0" x2="42%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="49%" y1="0" x2="49%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="56%" y1="0" x2="56%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="63%" y1="0" x2="63%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="70%" y1="0" x2="70%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="77%" y1="0" x2="77%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="84%" y1="0" x2="84%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="91%" y1="0" x2="91%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+    <line x1="98%" y1="0" x2="98%" y2="100%" stroke="rgba(130,95,210,0.22)" stroke-width="0.8"/>
+  </g>
+</svg>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 120 90" width="120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0"  y="0"  width="5" height="10" rx="1" fill="#9b7ff4" opacity="0.38"/>
+      <rect x="9"  y="0"  width="5" height="14" rx="1" fill="#9b7ff4" opacity="0.65"/>
+      <rect x="18" y="0"  width="5" height="19" rx="1" fill="#9b7ff4" opacity="0.92"/>
+      <rect x="27" y="0"  width="5" height="12" rx="1" fill="#9b7ff4" opacity="0.52"/>
+      <text x="0" y="45" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white">INDUSTRIAL</text>
+      <text x="14" y="62" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#9b7ff4">REELS</text>
+    </svg>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a onclick="go('s-model')">El model</a></li>
+    <li><a onclick="go('s-peraqui')">Per a qui</a></li>
+    <li><a onclick="go('s-com')">Com treballem</a></li>
+    <li><a onclick="go('s-canals')">Canals</a></li>
+    <li><a onclick="go('s-sol')">Solucions</a></li>
+    <li><a onclick="go('s-proces')">El procés</a></li>
+  </ul>
+  <button class="nav-cta" onclick="go('s-cta')">Contacta'ns</button>
+  <button class="nav-burger" id="burger" onclick="toggle_menu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="content">
+
+  <section class="hero">
+    <svg viewBox="0 0 350 110" width="100%" style="max-width:500px; height:auto; display:block; margin:0 auto 40px;" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="40" font-family="Arial Black, sans-serif" font-size="45" font-weight="900" fill="white">INDUSTRIAL</text>
+      <text x="42" y="90" font-family="Arial Black, sans-serif" font-size="45" font-weight="900" fill="#9b7ff4">REELS</text>
+    </svg>
+    <div class="hero-tag">Especialistes en contingut industrial que genera credibilitat.</div>
+  </section>
+
+  <section style="padding-top:0; padding-bottom:80px;">
+    <div class="reels-scroll" id="reels-scroll">
+      <div class="reel-box"><div class="reel-circle"><div class="reel-play"></div></div><span class="reel-lbl">Reel 1</span></div>
+      <div class="reel-box"><div class="reel-circle"><div class="reel-play"></div></div><span class="reel-lbl">Reel 2</span></div>
+      <div class="reel-box"><div class="reel-circle"><div class="reel-play"></div></div><span class="reel-lbl">Reel 3</span></div>
+    </div>
+    <div class="reel-dots" id="reel-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="problema">
+    <h2>La web explica qui eres.<br><em>El perfil explica qui ets avui.</em></h2>
+    <p>La majoria d'empreses industrials a Catalunya no té presència activa a Instagram ni LinkedIn. En un sector on la confiança es guanya demostrant com es treballa, ser invisible és regalar mercat a la competència.</p>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="s-model">
+    <div class="slabel">El model</div>
+    <div class="stitle">Com funciona</div>
+    <span class="stitle-line"></span>
+    <div class="model-grid">
+      <div class="mcard"><h3>Produïm el contingut</h3><p>Estratègia, rodatge, edició i entrega de cada peça.</p></div>
+      <div class="mcard"><h3>Ritme regular</h3><p>Sense buits, perquè això és una carrera de fons i la consistència és clau.</p></div>
+      <div class="mcard"><h3>El compte és teu</h3><p>No gestionem les teves xarxes ni tenim accés al teu perfil, tu en tens el control.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="peraqui" id="s-peraqui">
+    <div class="slabel">Per a qui</div>
+    <div class="stitle">Empreses amb producte propi</div>
+    <span class="stitle-line"></span>
+    <div class="peraqui-body">Si el que feu es pot veure, es pot explicar. I si s'explica bé, genera confiança abans del primer contacte. El perfil és l'aparador permanent — obert les 24 hores, accessible des de qualsevol lloc.</div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="s-com">
+    <div class="slabel">Com treballem</div>
+    <div class="stitle">La nostra proposta</div>
+    <span class="stitle-line"></span>
+    <div class="com-grid">
+      <div class="ccard"><h4>Creiem en el treball real i tangible</h4><p>Peces mecanitzades, instal·lacions, equips especialitzats. Hi ha un valor enorme que mai es veu. Nosaltres el volem mostrar.</p></div>
+      <div class="ccard"><h4>Sense presses, sense plantilles</h4><p>Cada empresa té el seu ritme i la seva història. Ens hi dediquem de veritat, perquè el contingut que funciona no s'improvisa.</p></div>
+      <div class="ccard"><h4>El contingut creat és vostre i s'amortitza sol</h4><p>Instagram, YouTube, LinkedIn, la web, fires. Una sola producció, múltiples canals.</p></div>
+      <div class="ccard"><h4>Zero interferències</h4><p>Sabem moure'ns en entorns de fabricació. Respectem els protocols d'EPIs i gravem sense aturar la vostra producció.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="s-canals">
+    <div class="slabel">Canals</div>
+    <div class="stitle">On apareixerà el vostre contingut</div>
+    <span class="stitle-line"></span>
+    <div class="canals-grid">
+      <div class="canal-card">
+        <div class="canal-icon">📱</div>
+        <h4>Instagram</h4>
+        <p>El canal de descobriment, els reels aconsegueixen que noves empreses us trobin sense buscar-vos.</p>
+        <span class="canal-tag">Inclòs</span>
+      </div>
+      <div class="canal-card">
+        <div class="canal-icon"><span style="display:inline-block; border: 1.5px solid #e05050; border-radius: 4px; padding: 2px 5px; line-height:1;">▶</span></div>
+        <h4>YouTube</h4>
+        <p>Presència permanent al cercador més gran del món gràcies a YouTube Shorts.</p>
+        <span class="canal-tag">Inclòs</span>
+      </div>
+      <div class="canal-card addon">
+        <div class="canal-icon">💼</div>
+        <h4>LinkedIn</h4>
+        <p>El canal B2B per excel·lència. Contingut adaptat en format, to i copy per arribar a directors, compradors i socis industrials.</p>
+        <span class="canal-tag at">Add-on · B2B</span>
+      </div>
+    </div>
+    <div style="max-width:1072px; margin: 32px auto 0; text-align:center; padding: 18px 24px; background: rgba(107,63,160,0.08); border: 0.5px solid rgba(155,127,244,0.25); border-radius: 8px;">
+      <p style="font-size:14px; color:rgba(210,195,255,0.70); line-height:1.6;"><strong style="color:rgba(210,195,255,0.90);">Inversió d'un sol ús, rendiment multicanal:</strong> el material generat s'amortitza sol en ser utilitzat a la web, fires i departament comercial.</p>
+    </div>
+  </section>
+    <div class="slabel">Les solucions</div>
+    <div class="stitle">Tria el teu punt de partida</div>
+    <span class="stitle-line"></span>
+    <div class="sol-grid">
+      <div class="sol-card">
+        <div class="sol-name">OPTIMITZACIÓ</div>
+        <div class="sol-sub">Ja teniu perfil. Incorporeu vídeo de qualitat.</div>
+        <div class="sol-channel">Instagram · YouTube Shorts</div>
+        <ul class="sol-items">
+          <li>Definició identitat visual</li>
+          <li>4 reels/mes</li>
+          <li>Rodatge i edició professionals</li>
+        </ul>
+        <button class="cta-link" onclick="go('s-cta')">Demana pressupost →</button>
+      </div>
+      <div class="sol-card feat">
+        <div class="sol-name">CONSTRUÏM</div>
+        <div class="sol-sub">Partiu de zero. Ho construïm tot des del principi.</div>
+        <div class="sol-channel">Instagram · YouTube Shorts</div>
+        <ul class="sol-items">
+          <li>Estratègia i proposta de continguts trimestral</li>
+          <li>Definició identitat visual</li>
+          <li>Acompanyament configuració compte</li>
+          <li>4 reels/mes</li>
+          <li>2 carrusels + 2 posts estàtics/mes</li>
+          <li>Rodatge, fotografia i edició professionals</li>
+        </ul>
+        <button class="cta-link" onclick="go('s-cta')">Demana pressupost →</button>
+      </div>
+    </div>
+    <div class="sol-addon">
+      <div>
+        <span class="addon-badge">Add-on · Compatible amb les dues solucions</span>
+        <div class="addon-name">+ EXPANSIÓ B2B</div>
+        <div class="addon-desc">Adaptació del contingut existent per a LinkedIn: format horitzontal o quadrat, copy professional orientat a B2B, estratègia de publicació per arribar a decisors industrials.</div>
+      </div>
+      <button class="cta-link" onclick="go('s-cta')">Demana informació →</button>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="s-proces">
+    <div class="slabel">El procés</div>
+    <div class="stitle">Com és el primer mes</div>
+    <span class="stitle-line"></span>
+    <div class="proc-steps">
+      <div class="pstep"><div class="pstep-n">1</div><h4>Auditoria i Diagnòstic</h4><p>Coneixem l'empresa: productes, equip i calendari.</p></div>
+      <div class="pstep"><div class="pstep-n">2</div><h4>Disseny de la Identitat Visual</h4><p>Paleta, tipografia i estil d'edició.</p></div>
+      <div class="pstep"><div class="pstep-n">3</div><h4>Configuració de l'ecosistema</h4><p>Setup del compte d'Instagram.</p></div>
+      <div class="pstep"><div class="pstep-n">4</div><h4>Producció i Control de Qualitat</h4><p>6–8 peces inicials llestes per publicar.</p></div>
+      <div class="pstep" style="background: rgba(107,63,160,0.18); border-color: rgba(155,127,244,0.55);"><div class="pstep-n">5</div><h4>Servei en marxa</h4><p>Des del mes 2, contingut nou cada mes amb ritme regular.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="cta-sec" id="s-cta">
+    <div class="slabel">Contacte</div>
+    <div class="stitle">Transformem el vostre procés en impacte visual</div>
+    <p>Una trucada de 20 minuts per veure si encaixa.</p>
+    <form class="cta-form" name="contacte" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
+      <input type="hidden" name="form-name" value="contacte"/>
+      <input type="text" name="bot-field" style="display:none"/>
+      <input type="text" name="nom" placeholder="Nom i empresa" required/>
+      <input type="email" name="email" placeholder="Correu electrònic" required/>
+      <textarea name="missatge" placeholder="Explica'ns breument la teva empresa (opcional)"></textarea>
+      <button type="submit">Parlem del vostre projecte</button>
+    </form>
+  </section>
+
+</div>
+
+<script>
+function go(id) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('nav-links').classList.remove('open');
+}
+function toggle_menu() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+var scroll = document.getElementById('reels-scroll');
+var dots = document.querySelectorAll('.dot');
+if (scroll) {
+  scroll.addEventListener('scroll', function() {
+    var idx = Math.round(scroll.scrollLeft / scroll.offsetWidth);
+    dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  });
+}
+</script>
+
+</body>
+</html>
