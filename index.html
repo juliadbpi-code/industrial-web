@@ -340,13 +340,12 @@ section { position: relative; z-index: 1; padding: 88px 64px; }
     <div class="slabel">Contacte</div>
     <div class="stitle">Transformem el vostre procés en impacte visual</div>
     <p>Una trucada de 20 minuts per veure si encaixa.</p>
-    <form class="cta-form" name="contacte" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thankyou.html">
-      <input type="hidden" name="form-name" value="contacte"/>
-      <input type="text" name="bot-field" style="display:none"/>
-      <input type="text" name="nom" placeholder="Nom i empresa" required/>
-      <input type="email" name="email" placeholder="Correu electrònic" required/>
-      <textarea name="missatge" placeholder="Explica'ns breument la teva empresa (opcional)"></textarea>
-      <button type="submit">Parlem del vostre projecte</button>
+<form class="cta-form" action="https://formspree.io/f/mrerqwbz" method="POST">
+  <input type="hidden" name="_next" value="https://juliadbpi-code.github.io/industrial-web/thankyou.html">
+<input type="text" name="nom" placeholder="Nom i empresa" required/>
+<input type="email" name="email" placeholder="Correu electrònic" required/>
+<textarea name="missatge" placeholder="Explica'ns breument la teva empresa (opcional)"></textarea>
+<button type="submit">Parlem del vostre projecte</button>
     </form>
   </section>
 
